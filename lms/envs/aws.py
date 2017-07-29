@@ -459,6 +459,10 @@ FIELD_OVERRIDE_PROVIDERS = tuple(ENV_TOKENS.get('FIELD_OVERRIDE_PROVIDERS', []))
 with open(CONFIG_ROOT / CONFIG_PREFIX + "auth.json") as auth_file:
     AUTH_TOKENS = json.load(auth_file)
 
+
+BIGBLUEBUTTON_SERVER = AUTH_TOKENS.get('BIGBLUEBUTTON_SERVER','')
+BIGBLUEBUTTON_SALT = AUTH_TOKENS.get('BIGBLUEBUTTON_SALT','')   
+
 ############### XBlock filesystem field config ##########
 if 'DJFS' in AUTH_TOKENS and AUTH_TOKENS['DJFS'] is not None:
     DJFS = AUTH_TOKENS['DJFS']
