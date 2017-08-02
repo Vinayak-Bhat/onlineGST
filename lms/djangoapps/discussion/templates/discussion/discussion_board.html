@@ -56,36 +56,56 @@ DiscussionBoardFactory({
          data-sort-preference="${sort_preference}"
          data-flag-moderator="${json.dumps(flag_moderator)}"
          data-user-cohort-id="${user_cohort}">
-    <header class="page-header has-secondary">
+    <header style="margin:0px" class="page-header has-secondary">
         ## Breadcrumb navigation
         <div class="page-header-main">
-            <nav aria-label="${_('Discussions')}" class="sr-is-focusable" tabindex="-1">
+            <div style="margin-right:20px;padding-right:20px;border-right:1px solid lightgray">
+             Show:
+             <span style="font-size:13px" id="allFilter" class="active label label-default label-info">All</span>
+             <span style="font-size:13px" id="followedFilter" class="label label-default">Following</span>
+            </div>
+            <div style="padding-right:20px; border-right:1px solid lightgray">
+            Filter by:
+             <span style="font-size:13px" id="unreadFilter" class="label label-default">Unread</span>
+             <span style="font-size:13px" id="flaggedFilter" class="label label-default">Flagged</span>
+             <span style="font-size:13px" id="unansweredFilter" class="label label-default">Unanswered</span>
+
+             <span style="font-size:13px; margin-left:30px;" id="clearFilter" class="label label-default">Clear <i class="fa fa-close"> </i> </span>
+             </div>
+     <!--        <nav aria-label="${_('Discussions')}" class="sr-is-focusable" tabindex="-1">
                 <div class="has-breadcrumbs"></div>
-            </nav>
+            </nav> -->
         </div>
         <div class="page-header-secondary">
             ## Add Post button
             % if has_permission(user, 'create_thread', course.id):
             <div class="form-actions">
-                <button class="btn btn-small new-post-btn">${_("Add a Post")}</button>
+                <div class="btn btn-info new-post-btn">${_("Add a Post")}</div>
             </div>
             % endif
-            ## Search box
-            <div class="forum-search"></div>
+          
         </div>
     </header>
     <div class="page-content">
-        <div class="discussion-body layout layout-1t2t">
-            <aside class="forum-nav layout-col layout-col-a" role="complementary" aria-label="${_("Discussion thread list")}">
-                <%include file="_filter_dropdown.html" />
+        <div style="width:100%;" id="" class="row">
+           <div class="col-sm-4" style="padding-left: -15px;border-right: 1px solid lightgray" >
+            <aside style="border:none;" class="forum-nav layout-col layout-col-a" role="complementary" aria-label="${_("Discussion thread list")}">
+
+                
                 <div class="discussion-thread-list-container"></div>
             </aside>
-
+           </div>
+           <div class="col-sm-8">
             <main id="main" aria-label="Content" tabindex="-1" class="discussion-column layout-col layout-col-b">
-                <article class="new-post-article is-hidden" style="display: none" tabindex="-1" aria-label="${_("New topic form")}"></article>
+                <article class="new-post-article" style="display: none" tabindex="-1" aria-label="${_("New topic form")}"></article>
                 <div class="forum-content"></div>
             </main>
+           </div>
+        
         </div>
+       <hr>
+      
+
     </div>
 </section>
 </%block>

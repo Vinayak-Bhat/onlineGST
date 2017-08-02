@@ -15,6 +15,8 @@
   {% stylesheet 'style-vendor' %}
   {% stylesheet 'style-main-v1' %}
 
+  <link href="/static/skillexl_theme2/css/main.css" rel="stylesheet">
+
   {% block main_vendor_js %}
   {% javascript 'main_vendor' %}
   {% endblock %}
@@ -37,7 +39,7 @@
       {% block bodyextra %}{% endblock %}
     </div>
     {% with course=request.course %}
-      {% include "footer.html"|microsite_template_path %}
+      {% include "footer.html"|microsite_template_path with online_help_token=online_help_token %}
     {% endwith %}
 
   </div>

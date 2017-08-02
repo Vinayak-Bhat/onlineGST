@@ -68,6 +68,57 @@
                     newPostView: newPostView
                 });
                 router.start();
+
+                
+                var removeActiveShow = function() {
+                    $('#allFilter').removeClass('label-info');
+                    $('#followedFilter').removeClass('label-info');
+                 
+                }
+               
+
+                var removeActiveFilter = function() {
+                    $('#unreadFilter').removeClass('label-info');
+                    $('#flaggedFilter').removeClass('label-info');
+                    $('#unansweredFilter').removeClass('label-info');
+                }
+               
+
+
+                $('#allFilter').click(function(){
+                    removeActiveShow();
+                    $(this).addClass('label-info');
+                   
+                    router.discussionBoardView.discussionThreadListView.retrieveAllThreads();
+                });
+                $('#followedFilter').click(function(){
+                    removeActiveShow();
+                    $(this).addClass('label-info');
+                   
+                    router.discussionBoardView.discussionThreadListView.retrieveFollowed();
+                });
+                $('#unreadFilter').click(function(){
+                    removeActiveFilter();
+                    $(this).addClass('label-info');
+                    router.discussionBoardView.discussionThreadListView.setFilter('unread');
+                });
+                $('#flaggedFilter').click(function(){
+                    removeActiveFilter();
+                    $(this).addClass('label-info');
+                    router.discussionBoardView.discussionThreadListView.setFilter('flagged');
+                });
+                $('#unansweredFilter').click(function(){
+                    removeActiveFilter();
+                    $(this).addClass('label-info');
+                    router.discussionBoardView.discussionThreadListView.setFilter('unanswered');
+                });
+
+                $('#clearFilter').click(function(){
+                    removeActiveFilter();
+                   
+                    router.discussionBoardView.discussionThreadListView.setFilter('');
+                });
+
                 routerEvents = {
                     // Add new breadcrumbs and clear search box when the user selects topics
                     'topic:selected': function(topic) {

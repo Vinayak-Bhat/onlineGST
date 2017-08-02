@@ -208,16 +208,18 @@
                         self.retrieveDiscussions(self.discussionIds.split(','));
                     }
                 });
+
                 this.renderThreads();
                 return this;
             };
 
             DiscussionThreadListView.prototype.renderThreads = function() {
                 var $content, thread, i, len;
-                this.$('.forum-nav-thread-list').empty();
+                this.$('.forum-nav-thread-list').empty();                
                 for (i = 0, len = this.displayedCollection.models.length; i < len; i++) {
                     thread = this.displayedCollection.models[i];
                     $content = this.renderThread(thread);
+                    
                     this.$('.forum-nav-thread-list').append($content);
                 }
                 this.showMetadataAccordingToSort();
@@ -575,6 +577,16 @@
                 this.mode = 'followed';
                 return this.retrieveFirstPage();
             };
+
+            DiscussionThreadListView.prototype.filterAll = function() {
+                this.mode = 'all';
+                return this.retrieveFirstPage();
+            };
+            DiscussionThreadListView.prototype.setFilter = function(filter) {
+                this.filter = filter;
+                return this.retrieveFirstPage();
+            };
+
 
             DiscussionThreadListView.prototype.updateEmailNotifications = function() {
                 var $checkbox, checked, urlName;

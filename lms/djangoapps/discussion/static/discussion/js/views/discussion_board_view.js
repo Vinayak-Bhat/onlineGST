@@ -52,8 +52,8 @@
                     el: this.$('.forum-search')
                 }).render();
                 this.renderBreadcrumbs();
-                $(window).bind('load scroll resize', this.updateSidebar);
-                this.showBrowseMenu(true);
+                // $(window).bind('load scroll resize', this.updateSidebar);
+                
                 return this;
             },
 
