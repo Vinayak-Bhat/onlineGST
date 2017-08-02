@@ -26,7 +26,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse, NoReverseMatch, reverse_lazy
 from django.core.validators import validate_email, ValidationError
 from django.db import IntegrityError, transaction
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseServerError, Http404, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.translation import ungettext
@@ -139,6 +139,7 @@ import hashlib
 import socket
 from static_replace import make_static_urls_absolute
 import lms.lib.comment_client as cc
+import django_comment_client.utils as utils
 
 
 log = logging.getLogger("edx.student")
