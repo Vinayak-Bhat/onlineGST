@@ -1149,20 +1149,15 @@ def joinBBB(request, course_id):
 def mycourses(request):
     """
     Provides the LMS dashboard view
-
     TODO: This is lms specific and does not belong in common code.
-
     Arguments:
         request: The request object.
-
     Returns:
         The dashboard response.
-
     """
     user = request.user
 
     platform_name = configuration_helpers.get_value("platform_name", settings.PLATFORM_NAME)
-
     enable_verified_certificates = configuration_helpers.get_value(
         'ENABLE_VERIFIED_CERTIFICATES',
         settings.FEATURES.get('ENABLE_VERIFIED_CERTIFICATES')
@@ -1172,31 +1167,22 @@ def mycourses(request):
         settings.FEATURES.get('DISPLAY_COURSE_MODES_ON_DASHBOARD', True)
     )
 
-
     # we want to filter and only show enrollments for courses within
     # the 'ORG' defined in configuration.
     course_org_filter = configuration_helpers.get_value('course_org_filter')
-
 
     # Let's filter out any courses in an "org" that has been declared to be
     # in a configuration
     org_filter_out_set = configuration_helpers.get_all_orgs()
 
-    # Remove current site orgs from the "filter out" list, if applicable.
-    # We want to filter and only show enrollments for courses within
-    # the organizations defined in configuration for the current site.
-    course_org_filter = configuration_helpers.get_current_site_orgs()
+    # remove our current org from the "filter out" list, if applicable
     if course_org_filter:
-        org_filter_out_set = org_filter_out_set - set(course_org_filter)
+        org_filter_out_set.remove(course_org_filter)
 
     # Build our (course, enrollment) list for the user, but ignore any courses that no
     # longer exist (because the course IDs have changed). Still, we don't delete those
     # enrollments, because it could have been a data push snafu.
     course_enrollments = list(get_course_enrollments(user, course_org_filter, org_filter_out_set))
-
-    # Record how many courses there are so that we can get a better
-    # understanding of usage patterns on prod.
-    monitoring_utils.accumulate('num_courses', len(course_enrollments))
 
     # sort the enrollment pairs by the enrollment date
     course_enrollments.sort(key=lambda x: x.created, reverse=True)
@@ -1220,42 +1206,18 @@ def mycourses(request):
 
     course_optouts = Optout.objects.filter(user=user).values_list('course_id', flat=True)
 
-    sidebar_account_activation_message = ''
-    banner_account_activation_message = ''
-    display_account_activation_message_on_sidebar = configuration_helpers.get_value(
-        'DISPLAY_ACCOUNT_ACTIVATION_MESSAGE_ON_SIDEBAR',
-        settings.FEATURES.get('DISPLAY_ACCOUNT_ACTIVATION_MESSAGE_ON_SIDEBAR', False)
-    )
-
-    # Display activation message in sidebar if DISPLAY_ACCOUNT_ACTIVATION_MESSAGE_ON_SIDEBAR
-    # flag is active. Otherwise display existing message at the top.
-    if display_account_activation_message_on_sidebar and not user.is_active:
-        sidebar_account_activation_message = render_to_string(
-            'registration/account_activation_sidebar_notice.html',
-            {
-                'email': user.email,
-                'platform_name': platform_name,
-                'activation_email_support_link': activation_email_support_link
-            }
-        )
-    elif not user.is_active:
-        banner_account_activation_message = render_to_string(
+    message = ""
+    if not user.is_active:
+        message = render_to_string(
             'registration/activate_account_notice.html',
-            {'email': user.email}
+            {'email': user.email, 'platform_name': platform_name}
         )
 
-    enterprise_message = get_dashboard_consent_notification(request, user, course_enrollments)
-
-    # Account activation message
-    account_activation_messages = [
-        message for message in messages.get_messages(request) if 'account-activation' in message.tags
-    ]
-
-    # Global staff can see what courses encountered an error on their dashboard
+    # Global staff can see what courses errored on their dashboard
     staff_access = False
     errored_courses = {}
     if has_access(user, 'staff', 'global'):
-        # Show any courses that encountered an error on load
+        # Show any courses that errored on load
         staff_access = True
         errored_courses = modulestore().get_errored_courses()
 
@@ -1265,11 +1227,11 @@ def mycourses(request):
         and has_access(request.user, 'view_courseware_with_prerequisites', enrollment.course_overview)
     )
 
-    # Find programs associated with course runs being displayed. This information
+    # Find programs associated with courses being displayed. This information
     # is passed in the template context to allow rendering of program-related
     # information on the dashboard.
-    meter = ProgramProgressMeter(user, enrollments=course_enrollments)
-    inverted_programs = meter.invert_programs()
+    meter = programs_utils.ProgramProgressMeter(user, enrollments=course_enrollments)
+    programs_by_run = meter.engaged_programs(by_run=True)
 
     # Construct a dictionary of course mode information
     # used to render the course list.  We re-use the course modes dict
@@ -1406,10 +1368,9 @@ def mycourses(request):
             'ecommerce_payment_page': ecommerce_service.payment_page_url(),
         })
 
-    response = render_to_response('dashboard.html', context)
+    response = render_to_response('mycourses.html', context)
     set_user_info_cookie(response, request)
     return response
-
 
 def _create_recent_enrollment_message(course_enrollments, course_modes):  # pylint: disable=invalid-name
     """

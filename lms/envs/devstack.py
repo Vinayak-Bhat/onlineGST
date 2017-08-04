@@ -114,15 +114,18 @@ PIPELINE_SASS_ARGUMENTS = '--debug-info'
 ########################### VERIFIED CERTIFICATES #################################
 
 FEATURES['AUTOMATIC_VERIFY_STUDENT_IDENTITY_FOR_TESTING'] = True
-FEATURES['ENABLE_PAYMENT_FAKE'] = True
+FEATURES['ENABLE_PAYMENT_FAKE'] = False
 
-CC_PROCESSOR_NAME = 'CyberSource2'
+CC_PROCESSOR_NAME = 'PayU'
 CC_PROCESSOR = {
-    'CyberSource2': {
-        "PURCHASE_ENDPOINT": '/shoppingcart/payment_fake/',
-        "SECRET_KEY": 'abcd123',
-        "ACCESS_KEY": 'abcd123',
-        "PROFILE_ID": 'edx',
+    'PayU': {
+        "PURCHASE_ENDPOINT": 'https://test.payu.in/_payment',
+         "KEY": "gtKFFx",
+            "SECRET": "eCwWELxi",
+            "MODE": "sandbox",
+            "SUCCESS_URL": "http://localhost:8000/shoppingcart/postpay_callback/",
+            "FAILURE_URL": "http://localhost:8000/shoppingcart/postpay_callback/"
+
     }
 }
 
@@ -156,12 +159,12 @@ FEATURES['LICENSING'] = True
 
 
 ########################## Courseware Search #######################
-FEATURES['ENABLE_COURSEWARE_SEARCH'] = True
+FEATURES['ENABLE_COURSEWARE_SEARCH'] = False
 SEARCH_ENGINE = "search.elastic.ElasticSearchEngine"
 
 
 ########################## Dashboard Search #######################
-FEATURES['ENABLE_DASHBOARD_SEARCH'] = True
+FEATURES['ENABLE_DASHBOARD_SEARCH'] = False
 
 
 ########################## Certificates Web/HTML View #######################
@@ -184,7 +187,7 @@ COURSE_DISCOVERY_MEANINGS = {
     'language': LANGUAGE_MAP,
 }
 
-FEATURES['ENABLE_COURSE_DISCOVERY'] = True
+FEATURES['ENABLE_COURSE_DISCOVERY'] = False
 # Setting for overriding default filtering facets for Course discovery
 # COURSE_DISCOVERY_FILTERS = ["org", "language", "modes"]
 FEATURES['COURSES_ARE_BROWSEABLE'] = True

@@ -692,6 +692,24 @@ def postpay_callback(request):
         return render_to_response('shoppingcart/error.html', {'order': result['order'],
                                                               'error_html': result['error_html']})
 
+@csrf_exempt
+@require_POST
+def postpay_fail_callback(request):
+    """
+    Receives the POST-back from processor.
+    Mainly this calls the processor-specific code to check if the payment was accepted, and to record the order
+    if it was, and to generate an error page.
+    If successful this function should have the side effect of changing the "cart" into a full "order" in the DB.
+    The cart can then render a success page which links to receipt pages.
+    If unsuccessful the order will be left untouched and HTML messages giving more detailed error info will be
+    returned.
+    """
+    params = request.POST.dict()
+    result = process_postpay_callback(params)
+
+    request.session['attempting_upgrade'] = False
+    return render_to_response('shoppingcart/error.html', {'order': result['order'],
+                                                              'error_html': result['error_html']})
 
 @require_http_methods(["GET", "POST"])
 @login_required

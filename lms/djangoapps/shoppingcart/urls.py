@@ -5,6 +5,7 @@ urlpatterns = patterns(
     'shoppingcart.views',
 
     url(r'^postpay_callback/$', 'postpay_callback'),  # Both the ~accept and ~reject callback pages are handled here
+    url(r'^postpay_fail_callback/$', 'postpay_fail_callback'),
     url(r'^receipt/(?P<ordernum>[0-9]*)/$', 'show_receipt'),
     url(r'^donation/$', 'donate', name='donation'),
     url(r'^csv_report/$', 'csv_report', name='payment_csv_report'),
