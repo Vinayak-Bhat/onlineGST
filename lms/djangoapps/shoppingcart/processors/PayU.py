@@ -44,10 +44,10 @@ def sign(params):
         hash_string+='|'
     
     hash_string+=SALT
-    print hash_string
+  
     params['hash'] = hashlib.sha512(hash_string).hexdigest().lower()
     params['hash_string'] = hash_string
-    params['key'] = "gtKFFx"
+    params['key'] = get_processor_config().get('KEY', '')
     params['surl'] = get_processor_config().get('SUCCESS_URL', '')
     params['furl'] = get_processor_config().get('FAILURE_URL', '')
     params['phone'] = '9945964673'
@@ -64,7 +64,7 @@ def get_purchase_params(cart):
    
 
     params = OrderedDict()
-    params['key'] = "gtKFFx"
+    params['key'] = get_processor_config().get('KEY', '')
     hash_object = hashlib.sha256(b'randint(0,20)')
     params['txnid'] =  int(time.time() * 1000)  # hash_object.hexdigest()[0:20]
     params['amount'] = amount
@@ -111,8 +111,8 @@ def process_postpay_callback(params, **kwargs):
     key=params["key"]
     productinfo=params["productinfo"]
     email=params["email"]
-    salt="eCwWELxi"
-
+    salt=get_processor_config().get('SECRET', '')
+    
     try:
         additionalCharges=params["additionalCharges"]
         retHashSeq=additionalCharges+'|'+salt+'|'+status+'||||||||||' + params['udf1']+ '|'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
