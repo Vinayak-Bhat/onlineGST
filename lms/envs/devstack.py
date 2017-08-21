@@ -121,7 +121,7 @@ CC_PROCESSOR = {
     'PayU': {
         "PURCHASE_ENDPOINT": 'https://test.payu.in/_payment',
          "KEY": "gtKFFx",
-            "SECRET": "eCwWELxi",
+            "SECRET":"eCwWELxi",  #"fYIeyBS7",
             "MODE": "sandbox",
             "SUCCESS_URL": "http://localhost:8000/shoppingcart/postpay_callback/",
             "FAILURE_URL": "http://localhost:8000/shoppingcart/postpay_callback/"
