@@ -31,7 +31,7 @@ def sign(params):
     params needs to be an ordered dict, b/c cybersource documentation states that order is important.
     Reverse engineered from PHP version provided by cybersource
     """
-    SALT = get_processor_config().get('SECRET', '')
+    SALT = get_processor_config().get('SECRET', '') # '3sf0jURk'
     hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
   
     hash_string=''
@@ -46,35 +46,41 @@ def sign(params):
     hash_string+=SALT
   
     params['hash'] = hashlib.sha512(hash_string).hexdigest().lower()
+ 
     params['hash_string'] = hash_string
     params['key'] = get_processor_config().get('KEY', '')
     params['surl'] = get_processor_config().get('SUCCESS_URL', '')
     params['furl'] = get_processor_config().get('FAILURE_URL', '')
-    params['phone'] = '9945964673'
+    params['phone'] = '9741892299'
 
     return params
 
 
 
 def get_purchase_params(cart):
+    productinfo = ''
+    for item in cart.orderitem_set.all().select_subclasses("paidcourseregistration"):                   
+            productinfo += item.pdf_receipt_display_name 
+
     total_cost = cart.total_cost
     amount =   "{0:0.2f}".format(total_cost)
     cart_items = cart.orderitem_set.all()    
     key = get_processor_config().get('KEY', '')  
-   
-
+  
     params = OrderedDict()
-    params['key'] = get_processor_config().get('KEY', '')
-    hash_object = hashlib.sha256(b'randint(0,20)')
-    params['txnid'] =  int(time.time() * 1000)  # hash_object.hexdigest()[0:20]
-    params['amount'] = amount
-    params['productinfo'] = 'Demo course'
-    params['firstname'] = 'Vinayak'
-    params['email'] = 'vinayak@example.com'
+    params['key'] = key #'C0Dr8m'
+    params['txnid'] =     int(time.time() * 1000)      #'12345' 
+    params['amount'] = amount # 10
+    productinfo = productinfo.replace(" ", "")
+    params['productinfo'] = productinfo # 'Shopping'
+    params['firstname'] =  cart.user #'Test'
+    params['email'] = cart.user.email #'test@test.com' #
 
 
 
     params['udf1'] = "{0:d}".format(cart.id)
+    #params['udf2'] = 'abc'
+    #params['udf4'] = '15'
 
     return params
 
