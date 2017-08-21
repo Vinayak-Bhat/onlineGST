@@ -108,7 +108,7 @@ def process_postpay_callback(params, **kwargs):
     If unsuccessful this function should not have those side effects but should try to figure out why and
     return a helpful-enough error message in error_html.
     """
-   
+      
     status=params["status"]
     firstname=params["firstname"]
     amount=params["amount"]
@@ -131,6 +131,11 @@ def process_postpay_callback(params, **kwargs):
                     'order': order,
                     'error_html': 'Transaction failed'}
     else:
+        if(status != 'success'):
+            return {'success': False,
+                    'order': order,
+                    'error_html': 'Transaction failed'}
+
         order.purchase(
         first=params.get('firstname', ''),
         last=params.get('lastName', ''),
