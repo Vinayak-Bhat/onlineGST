@@ -51,7 +51,7 @@ def sign(params):
     params['key'] = get_processor_config().get('KEY', '')
     params['surl'] = get_processor_config().get('SUCCESS_URL', '')
     params['furl'] = get_processor_config().get('FAILURE_URL', '')
-    params['phone'] = '9741892299'
+    params['phone'] = '9999999999'
 
     return params
 
