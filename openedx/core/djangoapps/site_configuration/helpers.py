@@ -214,4 +214,4 @@ def page_title_breadcrumbs(*crumbs, **kwargs):
     if crumbs:
         return u'{}{}{}'.format(separator.join(crumbs), separator, platform_name)
     else:
-        return 'Comphrehensive online GST training from gst experts | ' + platform_name
+        return 'CueLMS E-Learning Simplified | ' + platform_name
