@@ -13,7 +13,7 @@ ${_("It is recommended that you change your password.")}
 
 ${_("To learn from your android smartphone, please download the app https://{app_link}").format(app_link="https://play.google.com/store/apps/details?id=com.cueehs.mobile&hl=en")}
 
-${_(Our support team is always available to assist you. Do get in touch on support@cueehs.com, if you are unable to advance at any stage.)}
+${_("Our support team is always available to assist you. Do get in touch on support@cueehs.com, if you are unable to advance at any stage.")}
 
 ${_("Sincerely yours,"
 "\n"
