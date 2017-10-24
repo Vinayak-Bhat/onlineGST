@@ -2157,6 +2157,9 @@ INSTALLED_APPS = (
 
     # Unusual migrations
     'database_fixups',
+
+    #dashboard for staff financials
+    'staffrevenue',
 )
 
 # Migrations which are not in the standard module "migrations"

@@ -1,0 +1,180 @@
+## mako
+
+<%page expression_filter="h"/>
+
+<%! import json %>
+<%!
+from django.utils.translation import ugettext as _
+from openedx.core.djangolib.js_utils import (
+    dump_js_escaped_json, js_escaped_string
+)
+%>
+<%namespace name='static' file='/static_content.html'/>
+<%inherit file="/main.html" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
+ <div class="row text-center">
+	 <span class="dropdown">
+		  <div class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Oct
+		  <span class="caret"></span></div>
+		  <ul class="dropdown-menu">
+		    <li><a href="#">Jan</a></li>
+		    <li><a href="#">Feb</a></li>
+		    <li><a href="#">Mar</a></li>
+		    <li><a href="#">Apr</a></li>
+		    <li><a href="#">May</a></li>
+		    <li><a href="#">Jun</a></li>
+		    <li><a href="#">Jul</a></li>
+		    <li><a href="#">Aug</a></li>
+		    <li><a href="#">Sep</a></li>
+		    <li><a href="#">Oct</a></li>
+		    <li><a href="#">Nov</a></li>
+		     <li><a href="#">Dec</a></li>
+		  </ul>
+	 </span> 
+	 <span class="dropdown">
+		  <div class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">2017
+		  <span class="caret"></span></div>
+		  <ul class="dropdown-menu">
+		    <li><a href="#">2016</a></li>
+		    <li><a href="#">2017</a></li>
+
+		  </ul>
+	 </span> 
+ </div>
+ <br/>
+<div class="row" style="max-width: none;">
+   <div class="col-sm-6 text-center" >
+       <span class="label label-success">Total Revenue </span>
+       <br/>
+       <div class="" style="width: 500px">
+       <canvas id="totalRevenueDoughNut"></canvas>
+       </div>
+   </div>
+   <div class="col-sm-6 text-center">
+   <span class="label label-success">Coursewise Revenue </span>
+       <br/>
+       <div class="" style="width: 500px">
+       <canvas id="coursewiseSideBar"></canvas>
+       </div>
+   </div>
+</div>
+<div class="row text-center" style="text-align: center;">
+    <span class="label label-default"> Course Sales Details </span>
+	<table class = "table table-striped" style="display: inline-table;margin: 0 auto;">
+	 
+	   
+	   <thead>
+	      <tr>
+	         <th>Student Name</th>
+	         <th>City</th>
+	         <th>Price</th>
+	      </tr>
+	   </thead>
+	   
+	   <tbody>
+	      <tr>
+	         <td>Tanmay</td>
+	         <td>Bangalore</td>
+	         <td>3000</td>
+	      </tr>
+	      
+	      <tr>
+	         <td>Sachin</td>
+	         <td>Mumbai</td>
+	         <td>4000</td>
+	      </tr>
+	      
+	      <tr>
+	         <td>Uma</td>
+	         <td>Pune</td>
+	         <td>12000</td>
+	      </tr>
+	   </tbody>
+	   
+	</table>
+</div>
+<script type="text/javascript">
+	var ctx = document.getElementById("totalRevenueDoughNut").getContext('2d');
+	revenueData = {
+    datasets: [{
+        data: [10, 20, 30],
+        backgroundColor: [
+                'rgba(240, 0, 0, 0.7)',
+                'rgba(0, 0, 240, 0.5)',
+                'rgba(0, 240, 0, 0.7)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+    }],
+
+  
+    labels: [
+        'Taxes',
+        'CueLMS Platform Fees',
+        'Your Share'
+    ]
+
+};
+   var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: revenueData,
+    options: Chart.defaults.doughnut
+});
+
+var coursewiseSideBar = document.getElementById("coursewiseSideBar").getContext('2d');
+	revenueData = {
+    datasets: [{
+        data: [20, 30, 40],
+        backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+                'rgba(255, 159, 64, 0.7)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+    }],
+
+  
+    labels: [
+        'CA Intro',
+        'CTPPT',
+        'Crash course'
+    ]
+
+};
+   var coursewiseSideBarChart = new Chart(coursewiseSideBar, {
+    type: 'horizontalBar',
+    data: revenueData,
+    options: Chart.defaults.doughnut
+});
+
+
+
+</script>
+
+
+
+
+
+
