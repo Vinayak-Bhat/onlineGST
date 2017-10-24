@@ -15,7 +15,7 @@ from parse_rest.core import ParseError
 
 from pyfcm import FCMNotification
  
-push_service = FCMNotification(api_key="AAAAOSl7wCg:APA91bEc-SP8G-yevHSPmMyoaRHyTnBZbnLAV1zGWqgCZii9-qXZJExRw1WXGI2q2vNmEmNDxjryWTjsEo7n23KqOhPTLUZW0S745PI_in05uWxZMj_uc_OVGx-pLeN_qNleH-Q1Yc78")
+push_service = FCMNotification(api_key="AAAAh9Kmjm8:APA91bFFB-UxV00isv9C4LslaTDbvzrfeTZ9-A_3M73N76NozLy4dgOebLXMAv8LhHzaIN7CpTE4fEDPXj-VQO4sBVBXJeRyYzgtj_wB3hNkW71yl2GGGkhfXjwrQ7eg_O_mYGOl6qJS")
 
 
 def push_notification_enabled():
