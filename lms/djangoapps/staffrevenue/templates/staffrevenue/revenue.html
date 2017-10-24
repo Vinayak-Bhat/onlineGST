@@ -47,49 +47,47 @@ from openedx.core.djangolib.js_utils import (
    <div class="col-sm-6 text-center" >
        <span class="label label-success">Total Revenue </span>
        <br/>
-       <div class="" style="width: 500px">
+       <div class="" style="width: 100%">
        <canvas id="totalRevenueDoughNut"></canvas>
        </div>
    </div>
    <div class="col-sm-6 text-center">
    <span class="label label-success">Coursewise Revenue </span>
        <br/>
-       <div class="" style="width: 500px">
+       <div class="" style="width: 100%">
        <canvas id="coursewiseSideBar"></canvas>
        </div>
    </div>
 </div>
+<br/>
 <div class="row text-center" style="text-align: center;">
-    <span class="label label-default"> Course Sales Details </span>
-	<table class = "table table-striped" style="display: inline-table;margin: 0 auto;">
+    <span class="label label-success"> Course Sales Details </span>
+    <br/>
+	<table class = "table table-striped text-center" style="display: inline-table;margin: 0 auto;">
 	 
 	   
 	   <thead>
 	      <tr>
-	         <th>Student Name</th>
-	         <th>City</th>
-	         <th>Price</th>
+	         <th>Student</th>
+	         <th>Course</th>
+             <th>Purchase Date</th>
+             <th>Course Price</th>
+	         <th>Discounts</th>
+             <th>Sale Price</th>
 	      </tr>
 	   </thead>
 	   
 	   <tbody>
+       % for order in order_list:
 	      <tr>
-	         <td>Tanmay</td>
-	         <td>Bangalore</td>
-	         <td>3000</td>
-	      </tr>
-	      
-	      <tr>
-	         <td>Sachin</td>
-	         <td>Mumbai</td>
-	         <td>4000</td>
-	      </tr>
-	      
-	      <tr>
-	         <td>Uma</td>
-	         <td>Pune</td>
-	         <td>12000</td>
-	      </tr>
+	         <td>${order.name}</td>
+	         <td>${order.course}</td>
+	         <td>${order.date}</td>
+             <td>${order.price}</td>
+             <td>${order.discount}</td>
+             <td>${order.sale_price}</td>
+	      </tr>      
+	    % endfor
 	   </tbody>
 	   
 	</table>
@@ -98,7 +96,7 @@ from openedx.core.djangolib.js_utils import (
 	var ctx = document.getElementById("totalRevenueDoughNut").getContext('2d');
 	revenueData = {
     datasets: [{
-        data: [10, 20, 30],
+        data: [${taxes}, ${your_revenue}, ${your_revenue}],
         backgroundColor: [
                 'rgba(240, 0, 0, 0.7)',
                 'rgba(0, 0, 240, 0.5)',
@@ -121,7 +119,7 @@ from openedx.core.djangolib.js_utils import (
   
     labels: [
         'Taxes',
-        'CueLMS Platform Fees',
+        'CueLMS Fees',
         'Your Share'
     ]
 
@@ -129,13 +127,22 @@ from openedx.core.djangolib.js_utils import (
    var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: revenueData,
-    options: Chart.defaults.doughnut
+    options: {
+        title: {
+            display: true,
+            text: 'Rs. ${total_revenue}'
+        }
+    }
 });
 
 var coursewiseSideBar = document.getElementById("coursewiseSideBar").getContext('2d');
 	revenueData = {
     datasets: [{
-        data: [20, 30, 40],
+        data: [
+         % for course in courses:
+        ${courses[course]},
+         % endfor 
+         ],
         backgroundColor: [
                 'rgba(255, 99, 132, 0.7)',
                 'rgba(54, 162, 235, 0.7)',
@@ -157,9 +164,9 @@ var coursewiseSideBar = document.getElementById("coursewiseSideBar").getContext(
 
   
     labels: [
-        'CA Intro',
-        'CTPPT',
-        'Crash course'
+    % for course in courses:
+        '${course}',
+    % endfor    
     ]
 
 };
