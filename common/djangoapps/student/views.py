@@ -8,7 +8,8 @@ import json
 import warnings
 from collections import defaultdict
 from urlparse import urljoin, urlsplit, parse_qs, urlunsplit
-
+import httplib
+import xml.dom.minidom
 from django.views.generic import TemplateView
 from pytz import UTC
 from requests import HTTPError
@@ -132,7 +133,7 @@ from openedx.core.djangoapps.user_api.preferences import api as preferences_api
 from openedx.core.djangoapps.catalog.utils import get_programs_data
 
 #below dependencies are added for the cue dashboards
-from courseware.courses import get_course_info_section_module
+from courseware.courses import get_course_info_section_module, get_course_overview_with_access
 from openedx.core.lib.xblock_utils import get_course_update_items
 import urllib, urllib2
 import hashlib
@@ -1056,20 +1057,39 @@ def dashboard(request):
 def bbb_wrap_load_file(url):
     timeout = 10
     socket.setdefaulttimeout(timeout)
-    try:
+    try:        
         req = urllib2.urlopen(url)
         return minidom.parse(req)
-    except:
-        return False    
+    except urllib2.HTTPError, e:
+        log.error(
+            u'Big blue api error =`%s`',
+            str(e.reason)
+        )
+    except urllib2.URLError, e:
+        log.error(
+            u'Big blue api error =`%s`',
+            str(e.reason)
+        )
+    except httplib.HTTPException, e:
+        log.error(
+            u'Big blue api error =`%s`',
+            str(e.reason)
+        )
+    except Exception:
+        import traceback
+        log.error(
+            u'Big blue api error =`%s`',
+            traceback.format_exc()
+        )
+        
 
 def assign2Dict(xml):
     try:
         mapping = {}
         response = xml.firstChild
         for child in response.childNodes:
-            print child
-            if( child.hasChildNodes() ):
-                print 'node value' + child.firstChild.nodeValue
+            
+            if( child.hasChildNodes() ):               
                 mapping[child.tagName] = child.firstChild.nodeValue
             else:
                 mapping[child.tagName] = None
@@ -1106,7 +1126,7 @@ def joinBBB(request, course_id):
     course = get_course_overview_with_access(user, 'load', course_key)
    
     
-    if request.user.is_staff:
+    if request.user.is_staff:        
         url_join = settings.BIGBLUEBUTTON_SERVER + "api/create?"    
         parameters = {
                       'name' : course.display_name ,  
@@ -1126,7 +1146,7 @@ def joinBBB(request, course_id):
                       'fullName' : user.username,
                       'password' : 'mp',
                       } 
-    else:
+    else:        
         parameters = {
                       
                       'meetingID' : course_id ,
@@ -1135,8 +1155,7 @@ def joinBBB(request, course_id):
                       } 
         
     
-    url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"    
-      
+    url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"
     parameters = urllib.urlencode(parameters)
     final_url = url_join + parameters + '&checksum=' + hashlib.sha1("join" + parameters + settings.BIGBLUEBUTTON_SALT).hexdigest()
     return HttpResponseRedirect(final_url)
