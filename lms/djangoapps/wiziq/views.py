@@ -115,7 +115,10 @@ def get_all_course_learners(course_key):
     et = etree.ElementTree(attendee_list)   
     et.write("wiziq_students.txt", "utf-8")
     
-
+def join(request,value):
+  shelf = shelve.open("wiziq.txt", writeback = True)        
+  url = shelf[str(value)]
+  return HttpResponseRedirect(url)
 
 @login_required
 @ensure_csrf_cookie

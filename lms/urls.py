@@ -957,10 +957,11 @@ urlpatterns += (
 
 urlpatterns += (
         url(
-            r'^virtualclass/{}$'.format(settings.COURSE_ID_PATTERN),
+            r'^virtualclass/',
             include('lms.djangoapps.wiziq.urls')),
       
     )
+
 
 
 if settings.FEATURES.get('ENABLE_FINANCIAL_ASSISTANCE_FORM'):
