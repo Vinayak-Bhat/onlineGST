@@ -1055,6 +1055,8 @@ def dashboard(request):
 
 
 def bbb_wrap_load_file(url):
+    if not settings.ENABLE_BIGBLUE:
+        return '/dashboard'
     timeout = 10
     socket.setdefaulttimeout(timeout)
     try:        
@@ -1102,6 +1104,8 @@ def assign2Dict(xml):
 
 def isMeetingRunning(course_id):  
     
+    if not settings.ENABLE_BIGBLUE:
+        return False
     url_join = settings.BIGBLUEBUTTON_SERVER + "api/isMeetingRunning?"    
     parameters = {
                   
