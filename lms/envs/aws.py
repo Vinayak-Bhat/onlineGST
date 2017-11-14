@@ -461,7 +461,10 @@ with open(CONFIG_ROOT / CONFIG_PREFIX + "auth.json") as auth_file:
 
 
 BIGBLUEBUTTON_SERVER = AUTH_TOKENS.get('BIGBLUEBUTTON_SERVER','')
-BIGBLUEBUTTON_SALT = AUTH_TOKENS.get('BIGBLUEBUTTON_SALT','')   
+BIGBLUEBUTTON_SALT = AUTH_TOKENS.get('BIGBLUEBUTTON_SALT','')
+
+if 'ENABLE_BIGBLUE' in FEATURES:
+    ENABLE_BIGBLUE = FEATURES.get('ENABLE_BIGBLUE', False)   
 
 ############### XBlock filesystem field config ##########
 if 'DJFS' in AUTH_TOKENS and AUTH_TOKENS['DJFS'] is not None:
