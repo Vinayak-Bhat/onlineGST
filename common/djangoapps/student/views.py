@@ -1155,7 +1155,7 @@ def joinBBB(request, course_id, mobile=None):
         if mobile is None:
             parameters = {
                       
-                      'meetingID' : course_id ,
+                      'meetingID' : course_key ,
                       'fullName' : user.username,
                       'password' : 'ap',
                       } 
@@ -1163,7 +1163,7 @@ def joinBBB(request, course_id, mobile=None):
             parameters = {
                     'redirectClient': 'true',
                     'clientURL': settings.BIGBLUEBUTTON_SERVER  + '/html5client/join',
-                      'meetingID' : course_id ,
+                      'meetingID' : course_key ,
                       'fullName' : user.username,
                       'password' : 'ap',
                       }    
