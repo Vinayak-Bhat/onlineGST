@@ -143,6 +143,7 @@ import lms.lib.comment_client as cc
 import django_comment_client.utils as utils
 
 
+
 log = logging.getLogger("edx.student")
 AUDIT_LOG = logging.getLogger("audit")
 ReverifyInfo = namedtuple('ReverifyInfo', 'course_id course_name course_number date status display')  # pylint: disable=invalid-name
@@ -1123,7 +1124,7 @@ def isMeetingRunning(course_id):
 
 @login_required
 @ensure_csrf_cookie
-def joinBBB(request, course_id):
+def joinBBB(request, course_id, mobile=None):
    
     user = request.user
     course_key = SlashSeparatedCourseKey.from_deprecated_string(course_id)
@@ -1150,15 +1151,22 @@ def joinBBB(request, course_id):
                       'fullName' : user.username,
                       'password' : 'mp',
                       } 
-    else:        
-        parameters = {
+    else:
+        if mobile is None:
+            parameters = {
                       
                       'meetingID' : course_id ,
                       'fullName' : user.username,
                       'password' : 'ap',
                       } 
-        
-    
+        else:
+            parameters = {
+                      'redirectClient'= 'true',
+                      'clientURL'= settings.BIGBLUEBUTTON_SERVER  + '/html5client/join',
+                      'meetingID' : course_id ,
+                      'fullName' : user.username,
+                      'password' : 'ap',
+                      }    
     url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"
     parameters = urllib.urlencode(parameters)
     final_url = url_join + parameters + '&checksum=' + hashlib.sha1("join" + parameters + settings.BIGBLUEBUTTON_SALT).hexdigest()
