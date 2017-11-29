@@ -1161,8 +1161,8 @@ def joinBBB(request, course_id, mobile=None):
                       } 
         else:
             parameters = {
-                      'redirectClient'= 'true',
-                      'clientURL'= settings.BIGBLUEBUTTON_SERVER  + '/html5client/join',
+                    'redirectClient': 'true',
+                    'clientURL': settings.BIGBLUEBUTTON_SERVER  + '/html5client/join',
                       'meetingID' : course_id ,
                       'fullName' : user.username,
                       'password' : 'ap',
