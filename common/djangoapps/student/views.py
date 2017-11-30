@@ -9,7 +9,7 @@ import warnings
 from collections import defaultdict
 from urlparse import urljoin, urlsplit, parse_qs, urlunsplit
 import httplib
-import xml.dom.minidom
+from xml.dom.minidom import parse
 from django.views.generic import TemplateView
 from pytz import UTC
 from requests import HTTPError
@@ -1056,13 +1056,16 @@ def dashboard(request):
 
 
 def bbb_wrap_load_file(url):
+    
     if not settings.ENABLE_BIGBLUE:
         return '/dashboard'
     timeout = 10
     socket.setdefaulttimeout(timeout)
-    try:        
-        req = urllib2.urlopen(url)
-        return minidom.parse(req)
+    try:       
+    
+        req = urllib2.urlopen(url)       
+        
+        return parse(req)
     except urllib2.HTTPError, e:
         log.error(
             u'Big blue api error =`%s`',
@@ -1118,24 +1121,23 @@ def isMeetingRunning(course_id):
     final_url = url_join + parameters + '&checksum=' + hashlib.sha1("isMeetingRunning" + parameters + settings.BIGBLUEBUTTON_SALT).hexdigest()
   
     xml = bbb_wrap_load_file(final_url)
-
     if(xml):
         return assign2Dict(xml)
 
 @login_required
 @ensure_csrf_cookie
-def joinBBB(request, course_id, mobile=None):
-   
+def joinBBB(request, course_id, mobile=None):     
     user = request.user
+    print mobile
     course_key = SlashSeparatedCourseKey.from_deprecated_string(course_id)
     course = get_course_overview_with_access(user, 'load', course_key)
-   
+     
     
-    if request.user.is_staff:        
+    if request.user.is_staff: 
         url_join = settings.BIGBLUEBUTTON_SERVER + "api/create?"    
         parameters = {
                       'name' : course.display_name ,  
-                      'meetingID' : course_key ,
+                      'meetingID' : course_key,
                       'fullName' : user.username,
                       'attendeePW' : 'ap',
                       'moderatorPW' : 'mp',
@@ -1161,12 +1163,22 @@ def joinBBB(request, course_id, mobile=None):
                       } 
         else:
             parameters = {
-                    'redirectClient': 'true',
-                    'clientURL': settings.BIGBLUEBUTTON_SERVER  + '/html5client/join',
+                    'redirect': 'false',
                       'meetingID' : course_key ,
                       'fullName' : user.username,
                       'password' : 'ap',
-                      }    
+                      }   
+            url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"
+            parameters2 = urllib.urlencode(parameters)
+            final_url = url_join + parameters2 + '&checksum=' + hashlib.sha1("join" + parameters2 + settings.BIGBLUEBUTTON_SALT).hexdigest()               
+            req = urllib2.urlopen(final_url)            
+            xml = parse(req)
+            auth_token =  xml.getElementsByTagName("auth_token")[0].firstChild.nodeValue
+            user_id = xml.getElementsByTagName("user_id")[0].firstChild.nodeValue
+            meeting_id = xml.getElementsByTagName("meeting_id")[0].firstChild.nodeValue
+            html_url = 'http://35.154.65.112/html5client/'+meeting_id +'/'+user_id+'/'+auth_token
+            return HttpResponseRedirect(html_url)
+
     url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"
     parameters = urllib.urlencode(parameters)
     final_url = url_join + parameters + '&checksum=' + hashlib.sha1("join" + parameters + settings.BIGBLUEBUTTON_SALT).hexdigest()
