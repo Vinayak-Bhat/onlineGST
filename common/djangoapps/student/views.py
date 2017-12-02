@@ -1176,7 +1176,7 @@ def joinBBB(request, course_id, mobile=None):
             auth_token =  xml.getElementsByTagName("auth_token")[0].firstChild.nodeValue
             user_id = xml.getElementsByTagName("user_id")[0].firstChild.nodeValue
             meeting_id = xml.getElementsByTagName("meeting_id")[0].firstChild.nodeValue
-            html_url = 'http://35.154.65.112/html5client/'+meeting_id +'/'+user_id+'/'+auth_token
+            html_url =  settings.BIGBLUEBUTTON_SERVER.split("/bigbluebutton")[0]+ '/html5client/'+meeting_id +'/'+user_id+'/'+auth_token
             return HttpResponseRedirect(html_url)
 
     url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"
