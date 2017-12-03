@@ -32,7 +32,7 @@ urlpatterns = (
     url(r'', include('student.urls')),
     # TODO: Move lms specific student views out of common code
     url(r'^courses/{}/joinbbb/$'.format(settings.COURSE_ID_PATTERN), 'student.views.joinBBB', name="joinBBB"),
-    url(r'^courses/{}/joinbbb/(?P<mobile>\D+)/$'.format(settings.COURSE_ID_PATTERN), 'student.views.joinBBB', name="joinBBB"),
+    url(r'^courses/{}/joinbbb/(?P<username>\D+)/$'.format(settings.COURSE_ID_PATTERN), 'student.views.joinBBBMobile', name="joinBBBMobile"),
 
     url(r'^dashboard$', 'student.views.dashboard', name="dashboard"),
     url(r'^mycourses$', 'student.views.mycourses', name="mycourses"),
