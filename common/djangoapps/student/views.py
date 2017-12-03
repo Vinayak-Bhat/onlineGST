@@ -1184,8 +1184,26 @@ def joinBBB(request, course_id, mobile=None):
     final_url = url_join + parameters + '&checksum=' + hashlib.sha1("join" + parameters + settings.BIGBLUEBUTTON_SALT).hexdigest()
     return HttpResponseRedirect(final_url)
 
+def joinBBBMobile(request, course_id, username=None): 
+    course_key = SlashSeparatedCourseKey.from_deprecated_string(course_id)
+    parameters = {
+                    'redirect': 'false',
+                      'meetingID' : course_key ,
+                      'fullName' : username,
+                      'password' : 'ap',
+                      }   
+    url_join = settings.BIGBLUEBUTTON_SERVER + "api/join?"
+    parameters2 = urllib.urlencode(parameters)
+    final_url = url_join + parameters2 + '&checksum=' + hashlib.sha1("join" + parameters2 + settings.BIGBLUEBUTTON_SALT).hexdigest()               
+    req = urllib2.urlopen(final_url)            
+    xml = parse(req)
+    auth_token =  xml.getElementsByTagName("auth_token")[0].firstChild.nodeValue
+    user_id = xml.getElementsByTagName("user_id")[0].firstChild.nodeValue
+    meeting_id = xml.getElementsByTagName("meeting_id")[0].firstChild.nodeValue
+    html_url =  settings.BIGBLUEBUTTON_SERVER.split("/bigbluebutton")[0]+ '/html5client/'+meeting_id +'/'+user_id+'/'+auth_token
+    return HttpResponseRedirect(html_url)
 
-        
+           
 
 @login_required
 @ensure_csrf_cookie
