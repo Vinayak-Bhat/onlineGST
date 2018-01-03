@@ -957,6 +957,16 @@ urlpatterns += (
       
     )
 
+
+urlpatterns += (
+        url(
+            r'^createsite/$',
+            include('lms.djangoapps.create_site.urls')),
+      
+    )
+
+
+
 urlpatterns += (
         url(
             r'^virtualclass/',

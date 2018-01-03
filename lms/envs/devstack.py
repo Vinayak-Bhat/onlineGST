@@ -21,7 +21,8 @@ HTTPS = 'off'
 
 LMS_ROOT_URL = 'http://localhost:8000'
 BIGBLUEBUTTON_SERVER = 'http://35.154.65.112/bigbluebutton/'
-BIGBLUEBUTTON_SALT = '1194b1c6e682e52b775d105c3afa878d'  
+BIGBLUEBUTTON_SALT = '1194b1c6e682e52b775d105c3afa878d'
+ENABLE_BIGBLUE = True
 ################################ LOGGERS ######################################
 
 # Silence noisy logslllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll

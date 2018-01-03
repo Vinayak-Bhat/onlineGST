@@ -157,7 +157,7 @@ def index(request,course_id):
         with open('wiziq_students.txt', 'r') as myfile:
             data=myfile.read().replace('\n', '')
 
-        print data    
+            
         parameters = OrderedDict([
                       ('access_key', 'aOpoCYQh198='),
                       ('timestamp', str(unix_time)),

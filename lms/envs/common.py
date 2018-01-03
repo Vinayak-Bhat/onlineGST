@@ -2160,6 +2160,10 @@ INSTALLED_APPS = (
 
     #dashboard for staff financials
     'staffrevenue',
+
+    #create new sites
+    'create_site',
+    
 )
 
 # Migrations which are not in the standard module "migrations"

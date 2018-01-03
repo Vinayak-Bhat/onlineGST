@@ -1,0 +1,50 @@
+## mako
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    </head>
+ <body>
+
+
+
+<div class="container" > 
+
+	<div class="row" style="text-align:center;margin-top:200px"  >
+	   <div class="" >	
+              <form action="/createsite/" method="post">
+		    <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }" /> 
+		    <div class="form-group row">
+		       <div class="col-lg-4 text-right"  >
+		         <label for="email">Name</label>
+		       </div>
+		       <div class="col-lg-2" >	       
+		        <input style="width:200px" name="name" type="text" class="form-control" id="name">
+  		      </div> 
+		      <div class="col-lg-4 text-left">
+			  <p class="ml-1" style="margin-left:10px" >@edvay.com </p>
+		      </div>
+		    </div>
+		    <div class="form-group row">
+		        <div class="col-md-4 text-right">
+			    <label for="pwd">Display Name</label>
+		        </div>   
+		        <div class="col-md-8">
+	         	    <input style="width:400px" name="display-name"  type="text" class="form-control" id="display-name">
+		        </div>    
+		    </div>
+		   
+		    <button type="submit" class="btn btn-success">Create Open Edx Site</button>
+	      </form> 
+	   </div>	   
+	</div>	
+
+</div>
+
+</body>
