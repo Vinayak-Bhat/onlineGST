@@ -960,7 +960,7 @@ urlpatterns += (
 
 urlpatterns += (
         url(
-            r'^createsite/$',
+            r'^createsite/',
             include('lms.djangoapps.create_site.urls')),
       
     )
